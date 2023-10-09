@@ -1,1 +1,3 @@
 pip install flask
+pip install Flask-Session
+pip install psycopg2-binary

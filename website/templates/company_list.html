@@ -1,0 +1,216 @@
+{% extends "layout.html" %} {% block title %} Companies {% endblock %} {% block
+main %}
+<div id="company-list">
+  <div class="bc-area">
+    <h3>Company List <span class="badge bg-info">{{ count }}</span></h3>
+    <button class="btn btn-primary" onclick="showCompanyNew()">
+      <i class="bi bi-plus-circle pe-1"></i>
+      New
+    </button>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">ERP Code</th>
+        <th scope="col">Address</th>
+        <th scope="col">Web URL</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr class="company-rows">
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+        <td>
+          <!-- <form action="/settings/company/list" method="post">
+            <input type="text" name="id" value="{{ row[0] }}" hidden />
+            <button type="submit" class="btn btn-outline-success btn-sm">
+              Edit
+            </button>
+          </form> -->
+          <button
+            class="btn btn-outline-success btn-sm"
+            onclick="showCompanyUpdate('{{ row[0] }}', '{{ row[1] }}', '{{ row[2] }}', '{{ row[3] }}', '{{ row[4] }}')"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+      {% endfor %} {% if count == 0 %}
+      <tr class="table-warning visible">
+        <td colspan="5">No company found</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+<div id="company-update" hidden>
+  <div class="bc-area">
+    <h3>Update Company</h3>
+    <button class="btn btn-warning" onclick="goBack()">
+      <i class="bi bi-arrow-return-left pe-1"></i>
+      Go Back
+    </button>
+  </div>
+
+  <div class="update-company">
+    <form
+      id="update-form"
+      class="row g-3 needs-validation"
+      action="/settings/company/update"
+      method="post"
+      novalidate
+    >
+      <div class="col-md-6" hidden>
+        <label for="inputIdUpdate" class="form-label">#</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputIdUpdate"
+          name="id"
+          required
+          value="{{ id }}"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label for="inputCompanyNameUpdate" class="form-label"
+          >Company Name</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="inputCompanyNameUpdate"
+          name="company_name"
+          required
+          value="{{ name }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputErpCodeUpdate" class="form-label">ERP Code</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputErpCodeUpdate"
+          name="erp_code"
+          required
+          value="{{ erp }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputAddressUpdate" class="form-label">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputAddressUpdate"
+          name="address"
+          required
+          value="{{ address }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputWebAddressUpdate" class="form-label">Web URL</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon3">https://</span>
+          <input
+            type="text"
+            class="form-control"
+            id="inputWebAddressUpdate"
+            placeholder="www.companybrand.com"
+            name="web_address"
+            required
+            value="{{ web }}"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-floppy-fill pe-1"></i>
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function showCompanyNew() {
+    location.href = "/settings/company/new";
+  }
+  function showSpinner() {
+    var spinner = document.getElementById("loading");
+    spinner.removeAttribute("hidden");
+  }
+  function hideSpinner() {
+    var spinner = document.getElementById("loading");
+    spinner.setAttribute("hidden", true);
+  }
+  function showCompanyUpdate(id, name, erp, address, web) {
+    idUpdateInput = document.getElementById("inputIdUpdate");
+    nameUpdateInput = document.getElementById("inputCompanyNameUpdate");
+    erpUpdateInput = document.getElementById("inputErpCodeUpdate");
+    addressUpdateInput = document.getElementById("inputAddressUpdate");
+    webUpdateInput = document.getElementById("inputWebAddressUpdate");
+    idUpdateInput.value = id;
+    nameUpdateInput.value = name;
+    erpUpdateInput.value = erp;
+    addressUpdateInput.value = address;
+    webUpdateInput.value = web;
+    viewList = document
+      .getElementById("company-list")
+      .setAttribute("hidden", true);
+    viewNew = document
+      .getElementById("company-update")
+      .removeAttribute("hidden");
+  }
+  function goBack() {
+    viewList = document
+      .getElementById("company-update")
+      .setAttribute("hidden", true);
+    viewNew = document.getElementById("company-list").removeAttribute("hidden");
+  }
+</script>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    "use strict";
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll(".needs-validation");
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+          if (form.checkValidity() === true) {
+            event.preventDefault();
+            event.stopPropagation();
+            //submit code here
+            showSpinner();
+            form.submit();
+          }
+        },
+        false
+      );
+    });
+  })();
+</script>
+<!-- <script>
+  document.getElementById("update-form").onsubmit = function () {
+    //showSpinner();
+    alert("ok?");
+  };
+</script> -->
+{% endblock %}

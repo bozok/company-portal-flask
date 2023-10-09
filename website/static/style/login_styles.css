@@ -1,0 +1,33 @@
+.back {
+  background: #f9f8f8;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.div-center {
+  width: 400px;
+  height: 400px;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  padding: 1em 2em;
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+  display: table;
+  border-radius: 5px;
+  box-shadow: 10px 5px 5px rgb(236, 235, 235);
+}
+
+div.content {
+  display: table-cell;
+  vertical-align: middle;
+}

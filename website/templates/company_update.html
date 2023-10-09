@@ -1,0 +1,130 @@
+{% extends "layout.html" %} {% block title %} Update Company {% endblock %} {%
+block main %}
+
+<div id="company-edit">
+  <div class="bc-area">
+    <h3>Update Company</h3>
+    <button class="btn btn-warning" onclick="goBack()">
+      <i class="bi bi-arrow-return-left pe-1"></i>
+      Go Back
+    </button>
+  </div>
+
+  <div class="update-company">
+    <form
+      id="update-form"
+      class="row g-3 needs-validation"
+      action="/settings/company/update"
+      method="post"
+      novalidate
+    >
+      <div class="col-md-6">
+        <label for="inputCompanyNameUpdate" class="form-label"
+          >Company Name</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="inputCompanyNameUpdate"
+          name="company_name"
+          required
+          value="{{ name }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputErpCodeUpdate" class="form-label">ERP Code</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputErpCodeUpdate"
+          name="erp_code"
+          required
+          value="{{ erp }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputAddressUpdate" class="form-label">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputAddressUpdate"
+          name="address"
+          required
+          value="{{ address }}"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="inputWebAddressUpdate" class="form-label">Web URL</label>
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon3">https://</span>
+          <input
+            type="text"
+            class="form-control"
+            id="inputWebAddressUpdate"
+            placeholder="www.companybrand.com"
+            name="web_address"
+            required
+            value="{{ web }}"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-floppy-fill pe-1"></i>
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function goBack() {
+    location.href = "/settings/company/list";
+  }
+  function showSpinner() {
+    var spinner = document.getElementById("loading");
+    spinner.removeAttribute("hidden");
+  }
+  function hideSpinner() {
+    var spinner = document.getElementById("loading");
+    spinner.setAttribute("hidden", true);
+  }
+</script>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    "use strict";
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll(".needs-validation");
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+          if (form.checkValidity() === true) {
+            event.preventDefault();
+            event.stopPropagation();
+            //submit code here
+            showSpinner();
+            form.submit();
+          }
+        },
+        false
+      );
+    });
+  })();
+</script>
+<!-- <script>
+    document.getElementById("new-form").onsubmit = function () {
+      showSpinner();
+    };
+  </script> -->
+{% endblock %}
